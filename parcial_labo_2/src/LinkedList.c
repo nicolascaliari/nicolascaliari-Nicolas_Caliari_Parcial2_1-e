@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "linkedlist.h"
+#include "LinkedList.h"
 
 static Node* getNode(LinkedList* this, int nodeIndex);
 static int addNode(LinkedList* this, int nodeIndex,void* pElement);
 
 LinkedList* ll_newLinkedList(void)
 {
-    LinkedList* this = (LinkedList*)malloc(sizeof(LinkedList*));
+    LinkedList* this = (LinkedList*)malloc(sizeof(LinkedList));
     if(this != NULL)
     {
         this->pFirstNode = NULL;
@@ -265,7 +265,7 @@ void* ll_pop(LinkedList* this,int index)
 
 }
 
-
+//Me dice si un elemento esta dentro de una linkedlist
 int ll_contains(LinkedList* this, void* pElement)
 {
     int retorno=-1;//null
@@ -344,4 +344,34 @@ LinkedList* ll_clone(LinkedList* this) {
         cloneList = ll_subList(this,0,ll_len(this));
     }
     return cloneList;
+}
+
+
+
+
+
+
+
+/*
+ * \brief Cuenta la cantidad de elementos que cumplen con el criterio que es definido por la funcion que recibe como parametro!
+ *  \param this LinkedList puntero a la lista
+ *  \param fn funcion a aplicar
+ *  \return el acumulado
+ */
+int ll_count(LinkedList* this, int (*fn)(void* element))
+{
+	int acumulador = 0;
+	int i;
+    void* aux;
+    int longitud;
+    if(this!=NULL)
+    {
+		longitud = ll_len(this);
+        for(i = 0; i < longitud; i++)
+        {
+            aux = (void*)ll_get(this,i);
+            acumulador += fn(aux);
+        }
+    }
+	return acumulador;
 }

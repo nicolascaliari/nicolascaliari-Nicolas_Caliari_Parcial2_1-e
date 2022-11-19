@@ -12,22 +12,24 @@
  * \param void
  * \return Puntero a Jugador.
 **/
-Auto* auto_new()
+Venta* venta_new()
 {
-	Auto* pJugador;
+	Venta* pVenta;
 
-	pJugador =(Auto*)malloc(sizeof(Auto));
+	pVenta =(Venta*)malloc(sizeof(Venta));
 
-	if(pJugador != NULL)
+	if(pVenta != NULL)
 	{
-		auto_setId(pJugador, 0);
-		auto_setFecha_venta(pJugador, 0);
-		auto_setModelo(pJugador, " ");
-		auto_setCantidad(pJugador, 0);
-		auto_setPrecio_unitario(pJugador, 0);
-		auto_setTarjeta_credito(pJugador, 0);
+		venta_setId(pVenta, 0);
+		venta_setFecha_dia(pVenta, 0);
+		venta_setFecha_mes(pVenta, 0);
+		venta_setFecha_anio(pVenta, 0);
+		venta_setModelo(pVenta, " ");
+		venta_setCantidad(pVenta, 0);
+		venta_setPrecio_unitario(pVenta, 0);
+		venta_setTarjeta_credito(pVenta, " ");
 	}
-	return pJugador;
+	return pVenta;
 }
 
 
@@ -36,25 +38,27 @@ Auto* auto_new()
  * \param 6 punteros a char.
  * \return Puntero a jugador.
 **/
-Auto* auto_newParametros(char* idStr,char* nombreCompletoStr,char* edadStr, char* posicionStr, char* nacionalidadStr, char* idSelccionStr)
+Venta* venta_newParametros(char* idStr,char* fechaStrDia,char* fechaStrMes, char* fechaStrAnio,char* modeloStr, char* cantidadStr, char* precioStr, char* tarjetaStr)
 {
-	Auto *pJugador = auto_new();
+	Venta *pVenta = venta_new();
 
-	if(pJugador != NULL && idStr != NULL && nombreCompletoStr != NULL && edadStr != NULL && posicionStr != NULL && nacionalidadStr != NULL)
+	if(pVenta != NULL && idStr != NULL && fechaStrDia != NULL && modeloStr != NULL && cantidadStr != NULL && precioStr != NULL && tarjetaStr != NULL)
 	{
-				if(!(auto_setId(pJugador, atoi(idStr)) &&
-				auto_setFecha_venta(pJugador, atoi(nombreCompletoStr)) &&
-				auto_setModelo(pJugador, edadStr) &&
-				auto_setCantidad(pJugador,atoi(posicionStr)) &&
-				auto_setPrecio_unitario(pJugador, atoi(nacionalidadStr)) &&
-				auto_setTarjeta_credito(pJugador, atoi(idSelccionStr))))
+				if(venta_setId(pVenta, atoi(idStr)) == 0 ||
+				venta_setFecha_dia(pVenta, atoi(fechaStrDia)) == 0 ||
+				venta_setFecha_mes(pVenta, atoi(fechaStrMes)) == 0 ||
+				venta_setFecha_anio(pVenta, atoi(fechaStrAnio)) == 0 ||
+				venta_setModelo(pVenta, modeloStr) == 0 ||
+				venta_setCantidad(pVenta,atoi(cantidadStr)) == 0 ||
+				venta_setPrecio_unitario(pVenta, atoi(precioStr)) == 0 ||
+				venta_setTarjeta_credito(pVenta, tarjetaStr) == 0)
 				{
-					auto_delete(pJugador);
-					pJugador = NULL;
+					venta_delete(pVenta);
+					pVenta = NULL;
 				}
 
 	}
-	return pJugador;
+	return pVenta;
 }
 
 /**
@@ -62,7 +66,7 @@ Auto* auto_newParametros(char* idStr,char* nombreCompletoStr,char* edadStr, char
  * \param Puntero a Jugador
  * \return void.
 **/
-void auto_delete(Auto* this)
+void venta_delete(Venta* this)
 {
 	if(this != NULL)
 	{
@@ -78,7 +82,7 @@ void auto_delete(Auto* this)
  * \param int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_setId(Auto* this,int id)
+int venta_setId(Venta* this,int id)
 {
 	int retorno = 0;
 	if(this != NULL && id >= 0)
@@ -95,7 +99,7 @@ int auto_setId(Auto* this,int id)
  * \param puntero a int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_getId(Auto* this,int* id)
+int venta_getId(Venta* this,int* id)
 {
 	int retorno = 0;
 	if(this != NULL && id != NULL)
@@ -106,39 +110,7 @@ int auto_getId(Auto* this,int* id)
 	return retorno;
 }
 
-/**
- * \brief Carga un dato de tipo char en el campo nombreCompleto de jugador.
- * \param puntero a jugador
- * \param puntero a char
- * \return int 1 Bien, 0 ERROR.
-**/
-int auto_setFecha_venta(Auto* this,int fecha_venta)
-{
-	int retorno = 0;
-	if(this != NULL && fecha_venta > 0)
-	{
-		this->fecha_venta = fecha_venta;
-		retorno = 1;
-	}
-	return retorno;
-}
 
-/**
- * \brief Consigue un dato de tipo char en el campo nombreCompleto de jugador.
- * \param puntero a jugador
- * \param puntero a char
- * \return int 1 Bien, 0 ERROR.
-**/
-int auto_getFecha_venta(Auto* this,int* fecha_venta)
-{
-	int retorno = 0;
-	if(this != NULL && fecha_venta != NULL)
-	{
-		*fecha_venta = this->fecha_venta;
-		retorno = 1;
-	}
-	return retorno;
-}
 
 /**
  * \brief Carga un dato de tipo char en el campo posicion de jugador.
@@ -146,7 +118,7 @@ int auto_getFecha_venta(Auto* this,int* fecha_venta)
  * \param puntero a char
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_setModelo(Auto* this,char* modelo)
+int venta_setModelo(Venta* this,char* modelo)
 {
 	int retorno = 0;
 	if(this != NULL && modelo != NULL)
@@ -163,7 +135,7 @@ int auto_setModelo(Auto* this,char* modelo)
  * \param puntero a char
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_getModelo(Auto* this,char* modelo)
+int venta_getModelo(Venta* this,char* modelo)
 {
 	int retorno = 0;
 	if(this != NULL && modelo != NULL)
@@ -180,7 +152,7 @@ int auto_getModelo(Auto* this,char* modelo)
  * \param puntero a char
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_setCantidad(Auto* this,int cantidad)
+int venta_setCantidad(Venta* this,int cantidad)
 {
 	int retorno = 0;
 	if(this != NULL && cantidad > 0)
@@ -198,7 +170,7 @@ int auto_setCantidad(Auto* this,int cantidad)
  * \param puntero a char
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_getCantidad(Auto* this,int* cantidad)
+int venta_getCantidad(Venta* this,int* cantidad)
 {
 	int retorno = 0;
 	if(this != NULL && cantidad != NULL)
@@ -215,10 +187,10 @@ int auto_getCantidad(Auto* this,int* cantidad)
  * \param int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_setPrecio_unitario(Auto* this,int precio)
+int venta_setPrecio_unitario(Venta* this,int precio)
 {
 	int retorno = 0;
-	if(this != NULL && precio > 1)
+	if(this != NULL && precio > 0)
 	{
 		this->precio_unitario = precio;
 		retorno = 1;
@@ -232,7 +204,7 @@ int auto_setPrecio_unitario(Auto* this,int precio)
  * \param puntero a int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_getPrecio_unitario(Auto* this,int* precio)
+int venta_getPrecio_unitario(Venta* this,int* precio)
 {
 	int retorno = 0;
 	if(this != NULL && precio != NULL)
@@ -250,12 +222,12 @@ int auto_getPrecio_unitario(Auto* this,int* precio)
  * \param int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_setTarjeta_credito(Auto* this,int tarjeta)
+int venta_setTarjeta_credito(Venta* this,char* tarjeta)
 {
 	int retorno = 0;
 	if(this != NULL && tarjeta > 0)
 	{
-		this->tarjeta_credito = tarjeta;
+		strncpy(this->tarjeta_credito, tarjeta,30);
 		retorno = 1;
 	}
 	return retorno;
@@ -268,12 +240,60 @@ int auto_setTarjeta_credito(Auto* this,int tarjeta)
  * \param puntero a int
  * \return int 1 Bien, 0 ERROR.
 **/
-int auto_getTarjeta_credito(Auto* this,int* tarjeta)
+int venta_getTarjeta_credito(Venta* this,char* tarjeta)
 {
 	int retorno = 0;
 	if(this != NULL && tarjeta != NULL)
 	{
-		*tarjeta = this->tarjeta_credito;
+		strncpy(tarjeta, this->tarjeta_credito, 30);
+		retorno = 1;
+	}
+	return retorno;
+}
+
+//------------------------------
+int venta_setFecha_dia(Venta* this,int id)
+{
+	int retorno = 0;
+	if(this != NULL && id >= 0)
+	{
+		this->unaFecha.dia = id;
+		retorno = 1;
+	}
+	return retorno;
+}
+
+
+int venta_getFecha_dia(Venta* this,int* id)
+{
+	int retorno = 0;
+	if(this != NULL && id != NULL)
+	{
+		*id = this->unaFecha.dia;
+		retorno = 1;
+	}
+	return retorno;
+}
+
+
+int venta_setFecha_mes(Venta* this,int id)
+{
+	int retorno = 0;
+	if(this != NULL && id >= 0)
+	{
+		this->unaFecha.mes = id;
+		retorno = 1;
+	}
+	return retorno;
+}
+
+
+int venta_getFecha_mes(Venta* this,int* id)
+{
+	int retorno = 0;
+	if(this != NULL && id != NULL)
+	{
+		*id = this->unaFecha.mes;
 		retorno = 1;
 	}
 	return retorno;
@@ -281,6 +301,31 @@ int auto_getTarjeta_credito(Auto* this,int* tarjeta)
 
 
 
+
+int venta_setFecha_anio(Venta* this,int id)
+{
+	int retorno = 0;
+	if(this != NULL && id >= 0)
+	{
+		this->unaFecha.anio = id;
+		retorno = 1;
+	}
+	return retorno;
+}
+
+
+int venta_getFecha_anio(Venta* this,int* id)
+{
+	int retorno = 0;
+	if(this != NULL && id != NULL)
+	{
+		*id = this->unaFecha.anio;
+		retorno = 1;
+	}
+	return retorno;
+}
+
+//------------------------------
 
 /*
  * \brief Imprime jugador
@@ -291,34 +336,177 @@ int auto_getTarjeta_credito(Auto* this,int* tarjeta)
 
 int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 {
-	int retorno = -1;
-	  int axuId;
-	    int auxiliarFecha;
+		int retorno = -1;
+		int axuId;
+		int fecha_dia;
+		int fecha_mes;
+		int fecha_anio;
 	    char axuModelo[30];
 	    int cantidad;
 	    int auxPrecio;
-	    int tarjeta_credito;
-	Auto* auxJugador =NULL;
+	    char tarjeta_credito[30];
+	    Venta* pVenta =NULL;
 
 	 if(pArrayListaJugadores != NULL && indice >= 0 && indice < ll_len(pArrayListaJugadores))
 	 {
-		 auxJugador = (Auto*)ll_get(pArrayListaJugadores, indice);
+		 pVenta = (Venta*)ll_get(pArrayListaJugadores, indice);
 
-		if(auxJugador != NULL)
+		if(pVenta != NULL)
 		{
-			 if(auto_getId(auxJugador, &axuId)
-			     && auto_getFecha_venta(auxJugador, &auxiliarFecha)
-			     && auto_getModelo(auxJugador, axuModelo)
-			     && auto_getCantidad(auxJugador, &cantidad)
-			     && auto_getPrecio_unitario(auxJugador, &auxPrecio)
-				 && auto_getTarjeta_credito(auxJugador, &tarjeta_credito)){
+			 if(venta_getId(pVenta, &axuId)
+				&& venta_getFecha_dia(pVenta, &fecha_dia)
+				&& venta_getFecha_mes(pVenta, &fecha_mes)
+				&& venta_getFecha_anio(pVenta, &fecha_anio)
+			     && venta_getModelo(pVenta, axuModelo)
+			     && venta_getCantidad(pVenta, &cantidad)
+			     && venta_getPrecio_unitario(pVenta, &auxPrecio)
+				 && venta_getTarjeta_credito(pVenta, tarjeta_credito)){
 
 
-
-	        	printf("|%10d | %20d | %10s | %20d | %10d |  %10d  |\n", axuId, auxiliarFecha, axuModelo, cantidad,auxPrecio, tarjeta_credito);
+	        	printf("|%5d |%2d/%2d/%4d|%20s|%20d|$%-20d|%20s|\n", axuId, fecha_dia, fecha_mes, fecha_anio,  axuModelo, cantidad,auxPrecio, tarjeta_credito);
 	        	retorno  = 0;
 	        }
 		}
 	 }
 	 return retorno;
 }
+
+
+
+
+//
+///*
+// * \brief cuenta la cantidad de libros que hay con precio mayor a 500
+// * \param recibe un puntero a void
+// * \return int la cantidad contada
+// */
+int ventaContadorMayorADiezMil(void* libro)
+{
+	int retorno;
+	int auxPrecio;
+	Venta* auxVenta = (Venta*) libro;
+
+	if(auxVenta != NULL)
+	{
+		 venta_getPrecio_unitario(auxVenta, &auxPrecio);
+
+		if(auxPrecio > 10000)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+
+int ventaContadorMayorAVeinteMil(void* libro)
+{
+	int retorno;
+	int auxPrecio;
+	Venta* auxVenta = (Venta*) libro;
+
+	if(auxVenta != NULL)
+	{
+		venta_getPrecio_unitario(auxVenta, &auxPrecio);
+
+		if(auxPrecio > 20000)
+		{
+			retorno = 1;
+		}
+		else
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+
+int ventaAcumuladorUnidadesVendidas(void* libro)
+{
+	int retorno;
+	int auxPrecio;
+	Venta* auxVenta = (Venta*) libro;
+
+	if(auxVenta != NULL)
+	{
+		venta_getCantidad(auxVenta, &auxPrecio);
+
+		if(auxPrecio > 0)
+		{
+			retorno = auxPrecio;
+		}
+		else
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+
+
+int ventaAcumuladorVentasDeModelo(void* libro)
+{
+	int retorno;
+	int auxPrecio;
+	char modeloDeAuto[30] = "Ram 3500";
+	char auxModelo[30];
+	Venta* auxVenta = (Venta*) libro;
+
+	if(auxVenta != NULL)
+	{
+		venta_getModelo(auxVenta, auxModelo);
+
+		if(strncmp(modeloDeAuto , auxModelo, 30) == 0)
+		{
+			venta_getCantidad(auxVenta, &auxPrecio);
+			retorno = auxPrecio;
+		}
+		else
+		{
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+
+
+
+/**
+ * \brief Chequea la existencia de jugador.
+ * \param Puntero a Linkedlist
+ * \param int
+ * \return -1 error, si encuentra retorna el indice.
+**/
+int encontrarVenta(LinkedList* pArrayListaJugadores, int indice)
+{
+	int retorno =-1;
+	int idJugador;
+	Venta* pJugador;
+	int i;
+
+	if(pArrayListaJugadores != NULL && indice >=0)
+	{
+
+	for(i= 0 ; i < ll_len(pArrayListaJugadores); i++)
+	{
+		pJugador = (Venta*)ll_get(pArrayListaJugadores, i);
+
+		venta_getId(pJugador, &idJugador);
+
+			if(idJugador == indice)
+			{
+				retorno = ll_indexOf(pArrayListaJugadores, pJugador);
+				break;
+			}
+		}
+	}
+	return retorno;
+}
+

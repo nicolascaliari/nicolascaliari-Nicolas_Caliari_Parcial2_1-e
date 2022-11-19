@@ -10,37 +10,67 @@
 
 typedef struct
 {
+	int dia;
+	int mes;
+	int anio;
+}Fecha;
+
+typedef struct
+{
 	int ID_venta;
-	int fecha_venta;
+	Fecha unaFecha;
 	char modelo_auto[30];
 	int cantidad;
 	int precio_unitario;
-	int tarjeta_credito;
-}Auto;
+	char tarjeta_credito[30];
+}Venta;
 #include "LinkedList.h"
 
-Auto* auto_new();
-Auto* auto_newParametros(char* idStr,char* nombreCompletoStr,char* edadStr, char* posicionStr, char* nacionalidadStr, char* idSelccionStr);
-void auto_delete(Auto* this);
-int auto_setId(Auto* this,int id);
-int auto_getId(Auto* this,int* id);
-int auto_setFecha_venta(Auto* this,int fecha_venta);
-int auto_getFecha_venta(Auto* this,int* fecha_venta);
-int auto_setModelo(Auto* this,char* modelo);
-
-int auto_getModelo(Auto* this,char* modelo);
-
-int auto_setCantidad(Auto* this,int cantidad);
-
-int auto_getCantidad(Auto* this,int* cantidad);
-int auto_setPrecio_unitario(Auto* this,int precio);
-int auto_getPrecio_unitario(Auto* this,int* precio);
-
-int auto_setTarjeta_credito(Auto* this,int tarjeta);
-
-int auto_getTarjeta_credito(Auto* this,int* tarjeta);
-
-
+Venta* venta_new();
+Venta* venta_newParametros(char* idStr,char* fechaStrDia,char* fechaStrMes, char* fechaStrAnio,char* modeloStr, char* cantidadStr, char* precioStr, char* tarjetaStr);
+void venta_delete(Venta* this);
 int imprimirAuto(LinkedList* pArrayListaJugadores , int indice);
+
+
+int venta_setId(Venta* this,int id);
+
+int venta_getId(Venta* this,int* id);
+
+int venta_setModelo(Venta* this,char* modelo);
+
+int venta_getModelo(Venta* this,char* modelo);
+
+int venta_setCantidad(Venta* this,int cantidad);
+
+int venta_getCantidad(Venta* this,int* cantidad);
+
+int venta_setPrecio_unitario(Venta* this,int precio);
+
+int venta_getPrecio_unitario(Venta* this,int* precio);
+
+int venta_setTarjeta_credito(Venta* this,char* tarjeta);
+
+int venta_getTarjeta_credito(Venta* this,char* tarjeta);
+
+int venta_setFecha_dia(Venta* this,int id);
+
+int venta_getFecha_dia(Venta* this,int* id);
+
+int venta_setFecha_mes(Venta* this,int id);
+
+int venta_getFecha_mes(Venta* this,int* id);
+
+int venta_setFecha_anio(Venta* this,int id);
+
+int venta_getFecha_anio(Venta* this,int* id);
+
+
+int ventaContadorMayorADiezMil(void* libro);
+int ventaContadorMayorAVeinteMil(void* libro);
+int ventaAcumuladorUnidadesVendidas(void* libro);
+int ventaAcumuladorVentasDeModelo(void* libro);
+
+
+int encontrarVenta(LinkedList* pArrayListaJugadores, int indice);
 
 #endif /* AUTOS_H_ */

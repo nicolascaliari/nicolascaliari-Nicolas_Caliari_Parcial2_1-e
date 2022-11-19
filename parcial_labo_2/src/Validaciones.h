@@ -23,5 +23,6 @@ int utn_getDescripcion(char* pResultado, int longitud,char* mensaje, char* mensa
 int utn_getNombre(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos);
 int esNombre(char* cadena,int longitud);
 int getNombre(char* pResultado, int longitud);
+int utn_getDni(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos);
 
 #endif /* VALIDACIONES_H_ */

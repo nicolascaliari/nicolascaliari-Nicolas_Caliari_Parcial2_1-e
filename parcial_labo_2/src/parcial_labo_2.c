@@ -20,7 +20,8 @@ int main(void) {
 	setbuf(stdout,NULL);
     int option = 0;
     int bandera_cargar_datos = 0;
-    LinkedList* listaJugadores = ll_newLinkedList();
+    int contadorId = 50;
+    LinkedList* listaVentas = ll_newLinkedList();
 
 
 
@@ -31,17 +32,17 @@ int main(void) {
 									"\n3-Modificacion de auto"
 									"\n4-Baja de auto"
 									"\n5-Listados"
-									"\n8-Generar archivo binario"
-									"\n9-Cargar archivo binario"
-									"\n10-Guardar archivo .csv"
-    								"\n11-Salir", "Error ingrese las opciones que se muestran en el menu",1, 11, 2)==0)
+									"\n6-Generar informes venta"
+									"\n7-Guardar archivo .csv"
+									"\n8-Guarda archivo en binario"
+    								"\n9-Salir", "Error ingrese las opciones que se muestran en el menu",1, 9, 2)==0)
     	{
 
 
         switch(option)
         {
             case 1:
-            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaJugadores)== 0)
+            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaVentas)== 0)
 
             	{
             		printf("\nLos archivos  se leyeron correctamente");
@@ -51,18 +52,9 @@ int main(void) {
             		printf("\nLos archivos no se leyeron correctamente");
             	}
                 break;
-//            case 2:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//                	if(controller_agregarJugador(listaJugadores) == 0)
-//                	{
-//                		printf("\nTodo salio bien al dar de alta");
-//                	}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//            	break;
+            case 2:
+            	controller_agregarJugador(listaVentas , &contadorId);
+            	break;
 //            case 3:
 //            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
 //            	{
@@ -75,20 +67,11 @@ int main(void) {
 //            		printf("\nDebes ingresar la opcion uno primero");
 //            	}
 //                break;
-//            case 4:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//                	if(controller_removerJugador(listaJugadores, listaSelecciones) == 0)
-//                	{
-//                		printf("\nTodo salio bien al dar de baja");
-//                	}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//                break;
+            case 4:
+            	controller_removerJugador(listaVentas);
+                break;
             case 5:
-                	if(controller_listarJugadores(listaJugadores)== 0)
+                	if(controller_listarJugadores(listaVentas)== 0)
                 	{
                 		printf("Todo ok");
                 	}
@@ -105,18 +88,9 @@ int main(void) {
 //            		printf("\nDebes ingresar la opcion uno primero");
 //            	}
 //                break;
-//            case 7:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//            		if(menuListar_ordenar(listaJugadores,listaSelecciones) == 0)
-//            		{
-//            			printf("\nSalio todo bien");
-//            		}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//                break;
+            case 7:
+            	controller_saveAsText("Informes.txt" , listaVentas);
+                break;
 //            case 8:
 //            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
 //            	{

@@ -192,7 +192,7 @@ int esDescripcion(char* cadena,int longitud)
 	{
 		for(i=0 ; cadena[i] != '\0' && i < longitud; i++)
 		{
-			if(cadena[i] != '.' && cadena[i] != ' ' && (cadena[i] < 'A' || cadena[i] > 'Z' ) && (cadena[i] < 'a' || cadena[i] > 'z' ) && (cadena[i] < '0' || cadena[i] > '9' ) )
+			if(cadena[i] < '0' || cadena[i] > '9')
 			{
 				retorno = 0;
 				break;
@@ -220,7 +220,7 @@ int utn_getDescripcion(char* pResultado, int longitud,char* mensaje, char* mensa
 	{
 		reintentos--;
 		printf("%s",mensaje);
-		if(getDescripcion(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud )
+		if(getDescripcion(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) == longitud )
 		{
 			strncpy(pResultado,bufferString,longitud);
 			retorno = 0;
@@ -270,13 +270,13 @@ static int getDni(char* pResultado, int longitud)
  */
 int utn_getDni(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos)
 {
-	char bufferString[4096];
+	char bufferString[17];
 	int retorno = -1;
 	while(reintentos>=0)
 	{
 		reintentos--;
 		printf("%s",mensaje);
-		if(getDni(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud )
+		if(getDni(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) == longitud)
 		{
 			strncpy(pResultado,bufferString,longitud);
 			retorno = 0;
