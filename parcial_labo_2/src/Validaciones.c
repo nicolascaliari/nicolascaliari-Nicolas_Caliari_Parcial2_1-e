@@ -232,59 +232,74 @@ int utn_getDescripcion(char* pResultado, int longitud,char* mensaje, char* mensa
 }
 
 
-/**
- * \brief Obtiene un string valido como DNI
- * \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
- * \return Retorna 0 (EXITO) si se obtiene un numero flotante y -1 (ERROR) si no
- *
- */
-static int getDni(char* pResultado, int longitud)
+int isValidDNI(char* stringRecibido)
+{
+    int retorno=1;  // para las funciones isValid arranco con verdadero y cambio cuando encuentro un error
+    int i;
+    for(i=0;stringRecibido[i]!='\0';i++)
+    {
+        if((stringRecibido[i]<'0' || stringRecibido[i]>'9'))
+        {
+            retorno=0;
+            break;
+        }
+    }
+    return retorno;
+}
+int getStringg(char* msg, char* msgError, int min, int max, int* reintentos, char* resultado)
 {
     int retorno=-1;
-    char buffer[4096];
+    char bufferStr[max+10];
 
-    if(pResultado != NULL)
+    if(msg!=NULL && msgError!=NULL && min<=max && reintentos>=0 && resultado!=NULL)
     {
-    	if(	getString(buffer,sizeof(buffer))==0 &&
-    		esNumerica(buffer) &&
-			strnlen(buffer,sizeof(buffer))<longitud)
-    	{
-    		strncpy(pResultado,buffer,longitud);
-			retorno = 0;
-		}
+        do
+        {
+            printf("%s",msg);   //no poner salto de linea, se va a pasar en el mensaje por valor
+            fflush(stdin);
+            fgets(bufferStr,sizeof(bufferStr),stdin);
+            bufferStr[strlen(bufferStr)-1]='\0';
+
+            if(strlen(bufferStr)>=min && strlen(bufferStr)<max)    // tamaño (max) =cantidad de elementos (strlen) + 1(\0)
+            {
+                strncpy(resultado,bufferStr,max);
+                retorno=0;
+                break;
+            }
+            printf("%s 1",msgError);
+            (*reintentos)--;
+        }
+        while((*reintentos)>=0);
     }
     return retorno;
 }
 
-
-
-/**
- * \brief Solicita un DNI al usuario, luego de verificarlo devuelve el resultado
- * \param pResultado Puntero al espacio de memoria donde se dejara el resultado de la funcion
- * \param longitud Es la longitud del array resultado
- * \param mensaje Es el mensaje a ser mostrado
- * \param mensajeError Es el mensaje de Error a ser mostrado
- * \param reintentos Cantidad de reintentos
- * \return Retorna 0 si se obtuvo el numero flotante y -1 si no
- *
- */
-int utn_getDni(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos)
+int utn_getDNI(char* msg, char* msgError, int minSize, int maxSize, int reintentos, char* input)
 {
-	char bufferString[17];
-	int retorno = -1;
-	while(reintentos>=0)
-	{
-		reintentos--;
-		printf("%s",mensaje);
-		if(getDni(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) == longitud)
-		{
-			strncpy(pResultado,bufferString,longitud);
-			retorno = 0;
-			break;
-		}
-		printf("%s",mensajeError);
-	}
-	return retorno;
+//    maxSize=11; //con puntos
+//    minSize=8;  // sin puntos
+    int retorno=-1;
+    char bufferStr[maxSize];
+
+    if(msg!=NULL && msgError!=NULL && minSize<maxSize && reintentos>=0 && input!=NULL)
+    {
+        do
+        {
+            if(!getStringg(msg,msgError,minSize,maxSize,&reintentos,bufferStr)&&isValidDNI(bufferStr)==1) //==0 sin errores !0
+            {
+                strncpy(input,bufferStr,maxSize);
+                retorno=0;
+                break;
+            }
+            else
+            {
+                printf("%s 2",msgError);
+                reintentos--;
+            }
+        }
+        while(reintentos>=0);
+    }
+    return retorno;
 }
 
 

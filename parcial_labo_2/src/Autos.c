@@ -50,7 +50,7 @@ Venta* venta_newParametros(char* idStr,char* fechaStrDia,char* fechaStrMes, char
 				venta_setFecha_anio(pVenta, atoi(fechaStrAnio)) == 0 ||
 				venta_setModelo(pVenta, modeloStr) == 0 ||
 				venta_setCantidad(pVenta,atoi(cantidadStr)) == 0 ||
-				venta_setPrecio_unitario(pVenta, atoi(precioStr)) == 0 ||
+				venta_setPrecio_unitario(pVenta, atof(precioStr)) == 0 ||
 				venta_setTarjeta_credito(pVenta, tarjetaStr) == 0)
 				{
 					venta_delete(pVenta);
@@ -187,7 +187,7 @@ int venta_getCantidad(Venta* this,int* cantidad)
  * \param int
  * \return int 1 Bien, 0 ERROR.
 **/
-int venta_setPrecio_unitario(Venta* this,int precio)
+int venta_setPrecio_unitario(Venta* this,float precio)
 {
 	int retorno = 0;
 	if(this != NULL && precio > 0)
@@ -204,7 +204,7 @@ int venta_setPrecio_unitario(Venta* this,int precio)
  * \param puntero a int
  * \return int 1 Bien, 0 ERROR.
 **/
-int venta_getPrecio_unitario(Venta* this,int* precio)
+int venta_getPrecio_unitario(Venta* this,float* precio)
 {
 	int retorno = 0;
 	if(this != NULL && precio != NULL)
@@ -343,7 +343,7 @@ int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 		int fecha_anio;
 	    char axuModelo[30];
 	    int cantidad;
-	    int auxPrecio;
+	    float auxPrecio;
 	    char tarjeta_credito[30];
 	    Venta* pVenta =NULL;
 
@@ -363,7 +363,7 @@ int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 				 && venta_getTarjeta_credito(pVenta, tarjeta_credito)){
 
 
-	        	printf("|%5d |%2d/%2d/%4d|%20s|%20d|$%-20d|%20s|\n", axuId, fecha_dia, fecha_mes, fecha_anio,  axuModelo, cantidad,auxPrecio, tarjeta_credito);
+	        	printf("|%5d |%2d/%2d/%4d|%20s|%20d|$%-20f|%20s|\n", axuId, fecha_dia, fecha_mes, fecha_anio,  axuModelo, cantidad,auxPrecio, tarjeta_credito);
 	        	retorno  = 0;
 	        }
 		}
@@ -382,16 +382,24 @@ int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 // */
 int ventaContadorMayorADiezMil(void* libro)
 {
-	int retorno;
-	int auxPrecio;
+	int retorno = -1;
+//	int auxID;
+	float auxPrecio;
+	int auxCantidad;
+	int total;
 	Venta* auxVenta = (Venta*) libro;
 
 	if(auxVenta != NULL)
 	{
-		 venta_getPrecio_unitario(auxVenta, &auxPrecio);
+//		venta_getId(auxVenta, &auxID);
+		venta_getPrecio_unitario(auxVenta, &auxPrecio);
+		venta_getCantidad(auxVenta, &auxCantidad);
 
-		if(auxPrecio > 10000)
+		total = auxPrecio*auxCantidad;
+
+		if(total > 10000)
 		{
+
 			retorno = 1;
 		}
 		else
@@ -405,16 +413,24 @@ int ventaContadorMayorADiezMil(void* libro)
 
 int ventaContadorMayorAVeinteMil(void* libro)
 {
-	int retorno;
-	int auxPrecio;
+	int retorno = -1;
+	int auxID;
+	float auxPrecio;
+	int auxCantidad;
+	int total;
 	Venta* auxVenta = (Venta*) libro;
 
 	if(auxVenta != NULL)
 	{
+		venta_getId(auxVenta, &auxID);
 		venta_getPrecio_unitario(auxVenta, &auxPrecio);
+		venta_getCantidad(auxVenta, &auxCantidad);
 
-		if(auxPrecio > 20000)
+		total = auxPrecio*auxCantidad;
+
+		if(total > 20000)
 		{
+
 			retorno = 1;
 		}
 		else
@@ -428,7 +444,7 @@ int ventaContadorMayorAVeinteMil(void* libro)
 
 int ventaAcumuladorUnidadesVendidas(void* libro)
 {
-	int retorno;
+	int retorno = -1;
 	int auxPrecio;
 	Venta* auxVenta = (Venta*) libro;
 
@@ -452,7 +468,7 @@ int ventaAcumuladorUnidadesVendidas(void* libro)
 
 int ventaAcumuladorVentasDeModelo(void* libro)
 {
-	int retorno;
+	int retorno = -1;
 	int auxPrecio;
 	char modeloDeAuto[30] = "Ram 3500";
 	char auxModelo[30];

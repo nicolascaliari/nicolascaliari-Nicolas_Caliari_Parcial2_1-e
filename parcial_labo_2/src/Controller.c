@@ -26,11 +26,11 @@ int controller_cargarJugadoresDesdeTexto(char* path , LinkedList* pArrayListVent
 		{
 			if(parser_AutoFromText(pArchivo, pArrayListVenta) == 0)
 			{
-				printf("\nEl archivo se leyo corrrectamente\n");
+				printf("\nEl archivo de texto se leyo corrrectamente\n");
 				retorno = 0;
 			}else
 			{
-				printf("\nError al leer al archivo");
+				printf("\nError al leer al archivo  texto");
 			}
 		}
 		fclose(pArchivo);
@@ -45,29 +45,29 @@ int controller_cargarJugadoresDesdeTexto(char* path , LinkedList* pArrayListVent
  * \return int
  *
  */
-//int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJugador)
-//{
-//	int retorno = -1;
-//	FILE* pArchivo;
-//
-//	if(path != NULL && pArrayListJugador != NULL)
-//	{
-//		pArchivo = fopen(path, "rb");
-//		if(pArchivo != NULL)
-//		{
-//			if(parser_AutoFromBinary(pArchivo, pArrayListJugador))
-//			{
-//				printf("\nEl archivo se leyo corrrectamente\n");
-//				retorno = 0;
-//			}else
-//			{
-//				printf("\nError al leer al archivo");
-//			}
-//		}
-//		fclose(pArchivo);
-//	}
-//    return retorno;
-//}
+int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJugador)
+{
+	int retorno = -1;
+	FILE* pArchivo;
+
+	if(path != NULL && pArrayListJugador != NULL)
+	{
+		pArchivo = fopen(path, "rb");
+		if(pArchivo != NULL)
+		{
+			if(parser_AutoFromBinary(pArchivo, pArrayListJugador))
+			{
+				printf("\nEl archivo binario se leyo corrrectamente\n");
+				retorno = 0;
+			}else
+			{
+				printf("\nError al leer al archivo binario");
+			}
+		}
+		fclose(pArchivo);
+	}
+    return retorno;
+}
 
 
 
@@ -126,7 +126,7 @@ int controller_agregarJugador(LinkedList* pArrayListVenta , int* contadorID)
 	int fecha_anio;
     char axuModelo[30];
     int cantidad;
-//    char auxPrecio[30];
+    float auxPrecio;
     char tarjeta_credito[30];
     Venta* pJugador = NULL;
 
@@ -137,7 +137,8 @@ int controller_agregarJugador(LinkedList* pArrayListVenta , int* contadorID)
 		 && utn_getNumero(&fecha_anio, "\nIngrese el anio", "\nError",1000, 2023, 2) == 0
 		 && utn_getNombre(axuModelo, 30, "\nIngrese modelo del auto", "\nError", 2) == 0
 		 && utn_getNumero(&cantidad, "\nIngrese la cantidad", "\nError",1, 30, 2) == 0
-		 && utn_getDescripcion(tarjeta_credito, 16 , "\nIngrese su tarjeta", "\nError", 2) == 0)
+		 && utn_getNumeroFlotante(&auxPrecio, "\nIngrese el precio", "\nError", 1, 800000, 2) == 0
+		 && utn_getDNI("\nIngrese su tarjeta de credito", "\nError", 16, 17, 2, tarjeta_credito) == 0)
 		{
 
 		printf("%s", tarjeta_credito);
@@ -154,6 +155,7 @@ int controller_agregarJugador(LinkedList* pArrayListVenta , int* contadorID)
 					&& venta_setFecha_mes(pJugador, fecha_mes)
 					&& venta_setFecha_anio(pJugador, fecha_anio)
 					&& venta_setCantidad(pJugador, cantidad)
+					&& venta_setPrecio_unitario(pJugador, auxPrecio)
 					&& venta_setTarjeta_credito(pJugador, tarjeta_credito))
 				{
 					if(ll_add(pArrayListVenta, pJugador) == 0)
@@ -271,86 +273,93 @@ int controller_contarPorPrecio(LinkedList* pArrayListVenta, int* cantidad, int* 
 // * \return int
 // *
 // */
-//int controller_editarJugador(LinkedList* pArrayListJugador)
-//{
-//	int opcion;
-//	int menu;
-//	int indice;
-//	int retorno = -1;
-//	char auxiliarNombre[30];
-//	int auxiliarEdad;
-//	char auxiliarPosicion[30];
-//	char auxiliarNacionalidad[30];
-//	Jugador* pJugador = NULL;
-//
-//	if(pArrayListJugador != NULL && ll_len(pArrayListJugador) != 0)
-//	{
-//
-//		if(controller_listarJugadores(pArrayListJugador) == 0)
-//		{
-//
-//			if(utn_getNumero(&opcion, "\nIngrese el ID que desea modificas", "\nError al ingresar ID a modificar", 1, 10000, 2) == 0)
-//			{
-//
-//				indice = encontrarjugador(pArrayListJugador, opcion);
-//
-//				if(indice != 1)
-//				{
-//					pJugador = (Jugador*)ll_get(pArrayListJugador, indice);
-//
-//					if(pJugador != NULL)
-//					{
-//
-//						if(utn_getNumero(&menu, "\n          Menu de modificar"
-//													"\n1-Modificar nombre"
-//													"\n2-Modificar edad"
-//													"\n3-Modificar posicion"
-//													"\n4-Modificar nacionalidad"
-//													,"Error ingrese las opciones que se muestran en el menu", 1,4, 2)==0)
-//						{
-//							switch(menu)
-//							{
-//							case 1:
-//								if(utn_getNombre(auxiliarNombre, 30, "\nIngrese el nuevo nombre", "\nError", 2) == 0)
-//								{
-//									jug_setNombreCompleto(pJugador, auxiliarNombre);
-//									retorno = 0;
-//								}
-//								break;
-//							case 2:
-//								if(utn_getNumero(&auxiliarEdad, "\nIngrese la nueva edad", "\nError al ingresar nueva edad", 18, 50, 2) == 0)
-//								{
-//									jug_setEdad(pJugador, auxiliarEdad);
-//									retorno = 0;
-//								}
-//								break;
-//							case 3:
-//								if(utn_getNombre(auxiliarPosicion, 30, "\nIngrese la nueva posicion", "\nError", 2) == 0)
-//								{
-//									jug_setPosicion(pJugador, auxiliarPosicion);
-//									retorno = 0;
-//								}
-//								break;
-//							case 4:
-//								if(utn_getNombre(auxiliarNacionalidad, 30, "\nIngrese la nueva nacionalidad", "\nError al ingresar la nueva nacionalidad", 2) == 0)
-//								{
-//									jug_setNacionalidad(pJugador, auxiliarNacionalidad);
-//									retorno = 0;
-//								}
-//								break;
-//
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//		return retorno;
-//}
-//
-//
+int controller_editarJugador(LinkedList* pArrayListVenta)
+{
+	int opcion;
+	int menu;
+	int indice;
+	int retorno = -1;
+	char auxiliarModelo[30];
+	int auxiliarCantidad;
+	int fechaDia;
+	int fechaMes;
+	int fechaAnio;
+	float auxPrecio;
+	Venta* pVenta = NULL;
+
+	if(pArrayListVenta != NULL && ll_len(pArrayListVenta) != 0)
+	{
+
+		if(controller_listarJugadores(pArrayListVenta) == 0)
+		{
+
+			if(utn_getNumero(&opcion, "\nIngrese el ID que desea modificas", "\nError al ingresar ID a modificar", 1, 10000, 2) == 0)
+			{
+
+				indice = encontrarVenta(pArrayListVenta, opcion);
+
+				if(indice != 1)
+				{
+					pVenta = (Venta*)ll_get(pArrayListVenta, indice);
+
+					if(pVenta != NULL)
+					{
+
+						if(utn_getNumero(&menu, "\n          Menu de modificar"
+													"\n1-Modificar fecha"
+													"\n2-Modificar modelo de auto"
+													"\n3-Modificar cantidad"
+													"\n4-Modificar precio unitario"
+													"'n5-Modificar tarjeta de credito"
+													,"Error ingrese las opciones que se muestran en el menu", 1,4, 2)==0)
+						{
+							switch(menu)
+							{
+							case 1:
+								if(utn_getNumero(&fechaDia,"\nIngrese el dia a modificar", "\nError", 1, 30, 2) == 0
+								&& 	utn_getNumero(&fechaMes,"\nIngrese el mes a modificar", "\nError", 1, 12, 2) == 0
+								&& utn_getNumero(&fechaAnio,"\nIngrese el dia a modificar", "\nError", 1000, 2023, 2) == 0)
+								{
+									venta_setFecha_dia(pVenta, fechaDia);
+									venta_setFecha_mes(pVenta, fechaMes);
+									venta_setFecha_anio(pVenta, fechaAnio);
+									retorno = 0;
+								}
+								break;
+							case 2:
+								if(utn_getNombre(auxiliarModelo, 30, "\nIngrese el nuevo nombre", "\nError", 2) == 0)
+								{
+									venta_setModelo(pVenta, auxiliarModelo);
+									retorno = 0;
+								}
+								break;
+							case 3:
+								if(utn_getNumero(&auxiliarCantidad, "\nIngrese la nueva cantidad", "\nError al ingresar nueva cantidad", 1, 50, 2) == 0)
+								{
+									venta_setCantidad(pVenta, auxiliarCantidad);
+									retorno = 0;
+								}
+								break;
+							case 4:
+								if(utn_getNumeroFlotante(&auxPrecio, "\nIngrese el nuevo precio", "\nError", 1, 30000, 2) == 0)
+								{
+									venta_setPrecio_unitario(pVenta, auxPrecio);
+									retorno = 0;
+								}
+								break;
+
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+		return retorno;
+}
+
+
 ///** \brief Baja del jugador
 // *
 // * \param path char*
@@ -358,10 +367,10 @@ int controller_contarPorPrecio(LinkedList* pArrayListVenta, int* cantidad, int* 
 // * \return int
 // *
 // */
-int controller_removerJugador(LinkedList* pArrayListVenta)
+int controller_removerVenta(LinkedList* pArrayListVenta)
 {
 	int retorno = -1;
-	Venta* pJugador = NULL;
+	Venta* pVenta = NULL;
 	int idBuscado;
 	int indice;
 
@@ -377,9 +386,9 @@ int controller_removerJugador(LinkedList* pArrayListVenta)
 
 				if(indice != -1)
 				{
-					pJugador = (Venta*)ll_get(pArrayListVenta, indice);
+					pVenta = (Venta*)ll_get(pArrayListVenta, indice);
 					ll_remove(pArrayListVenta, indice);
-					venta_delete(pJugador);
+					venta_delete(pVenta);
 					printf("\nEmpleado eliminado correctamente\n");
 					retorno = 0;
 				}else
@@ -392,3 +401,63 @@ int controller_removerJugador(LinkedList* pArrayListVenta)
     return retorno;
 }
 
+
+
+
+/** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
+ *
+ * \param path char*
+ * \param pArrayListSeleccion LinkedList*
+ * \return int
+ *
+ */
+int controller_guardarJugadoresModoTexto(char* path , LinkedList* pArrayListJugador)
+{
+	int retorno = -1;
+	int limite;
+	Venta* auxiliarJugador = NULL;
+	FILE* pArchivo;
+	int axuId;
+	int fecha_dia;
+	int fecha_mes;
+	int fecha_anio;
+    char axuModelo[30];
+    int cantidad;
+    float auxPrecio;
+    char tarjeta_credito[30];
+	int i;
+
+		if(path != NULL && pArrayListJugador !=NULL)
+		{
+			pArchivo = fopen(path, "w");
+
+			if(pArchivo != NULL)
+			{
+				limite = ll_len(pArrayListJugador);
+				fprintf(pArchivo, "id,fecha_venta,modelo,cantidad,precio_unitario,tarjeta_de_credito\n");
+				for(i=0 ; i < limite; i++)
+				{
+					auxiliarJugador = ll_get(pArrayListJugador, i);
+
+					if(venta_getId(auxiliarJugador, &axuId) == 1
+						&& venta_getFecha_dia(auxiliarJugador, &fecha_dia) == 1
+						&& venta_getFecha_mes(auxiliarJugador, &fecha_mes) == 1
+						&& venta_getFecha_anio(auxiliarJugador, &fecha_anio) == 1
+						&& venta_getCantidad(auxiliarJugador, &cantidad)== 1
+						&& venta_getModelo(auxiliarJugador, axuModelo) == 1
+						&& venta_getPrecio_unitario(auxiliarJugador, &auxPrecio)==1
+						&& venta_getTarjeta_credito(auxiliarJugador, tarjeta_credito) == 1)
+					{
+						fprintf(pArchivo, "%d, %d/%d/%d , %s, %d , %f , %s\n", axuId, fecha_dia, fecha_mes, fecha_anio, axuModelo, cantidad,auxPrecio ,tarjeta_credito );
+						retorno = 0;
+					}
+
+				}
+			}else
+			{
+				printf("Algo salio mal");
+			}
+			fclose(pArchivo);
+		}
+    return retorno;
+}

@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "LinkedList.h"
 #include "Autos.h"
 #include "Validaciones.h"
 #include "Controller.h"
@@ -20,7 +21,7 @@ int main(void) {
 	setbuf(stdout,NULL);
     int option = 0;
     int bandera_cargar_datos = 0;
-    int contadorId = 50;
+    int contadorId = 94;
     LinkedList* listaVentas = ll_newLinkedList();
 
 
@@ -42,7 +43,8 @@ int main(void) {
         switch(option)
         {
             case 1:
-            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaVentas)== 0)
+            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaVentas)== 0
+            		&& controller_cargarJugadoresDesdeBinario("MOCK_DATA.csv" , listaVentas) == 0)
 
             	{
             		printf("\nLos archivos  se leyeron correctamente");
@@ -54,21 +56,12 @@ int main(void) {
                 break;
             case 2:
             	controller_agregarJugador(listaVentas , &contadorId);
-            	break;
-//            case 3:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//                	if(controller_editarJugador(listaJugadores) == 0)
-//                	{
-//                		printf("\nTodo salio bien al modificar");
-//                	}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//                break;
+             	break;
+            case 3:
+            	controller_editarJugador(listaVentas);
+                break;
             case 4:
-            	controller_removerJugador(listaVentas);
+            	controller_removerVenta(listaVentas);
                 break;
             case 5:
                 	if(controller_listarJugadores(listaVentas)== 0)
@@ -76,75 +69,23 @@ int main(void) {
                 		printf("Todo ok");
                 	}
                 break;
-//            case 6:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//                	if(menuConvocarJugadores(listaJugadores, listaSelecciones) == 0)
-//                	{
-//                		printf("\nTodo ok");
-//                	}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//                break;
-            case 7:
+            case 6:
             	controller_saveAsText("Informes.txt" , listaVentas);
                 break;
-//            case 8:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//            		menu_guardar_JugadoresBinario(listaJugadores, listaSelecciones);
-//            		bandera_cargar_datos_binarios = 1;
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//
-//                break;
-//            case 9:
-//            	if(bandera_cargar_datos == 1 && bandera_cargar_datos_binarios == 1)
-//            	{
-//                	if(menu_cargar_JugadoresBinario(listaJugadores, listaSelecciones) == 0)
-//                	{
-//                		printf("\nTodo salio bien");
-//
-//                	}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion 1 y 8");
-//            	}
-//
-//                break;
-//            case 10:
-//            	if(bandera_cargar_datos == 1 && ll_isEmpty(listaJugadores) == 0)
-//            	{
-//              		if(controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores) == 0
-//                    			&& controller_guardarSeleccionesModoTexto("selecciones.csv",listaSelecciones ) == 0)
-//                    		{
-//              			ll_clear(listaJugadores);
-//              			ll_clear(listaJugadores);
-//              					bandera_guardar_archivos = 1;
-//                    		}
-//            	}else
-//            	{
-//            		printf("\nDebes ingresar la opcion uno primero");
-//            	}
-//                break;
-//            case 11:
-//            	if(bandera_guardar_archivos == 0)
-//            	{
-//            		utn_getNumero(&option, "\nNo guardatse nada, seguro deseas salir? Ingresa 11 para salir o 1 para seguir.", "\nError", 1, 11, 2);
-//
-//            	}else{
-//            		printf("\nPrograma finalizado");
-//            		ll_deleteLinkedList(listaSelecciones);
-//            		ll_deleteLinkedList(listaJugadores);
-//            	}
-//            	break;
+            case 7:
+            	if(controller_guardarJugadoresModoTexto("MOCK_DATA.csv" , listaVentas) == 0)
+            	{
+            		printf("\nSe guardo bien el archivo en modo texto");
+            	}else
+            	{
+            		printf("\nNo se pudo guardar en modo texto");
+            	}
+                break;
+            case 9:
+                break;
         }
     }
-    }while(option != 11);
+    }while(option != 9);
 
 	return EXIT_SUCCESS;
 }

@@ -21,7 +21,7 @@ typedef struct
 	Fecha unaFecha;
 	char modelo_auto[30];
 	int cantidad;
-	int precio_unitario;
+	float precio_unitario;
 	char tarjeta_credito[30];
 }Venta;
 #include "LinkedList.h"
@@ -44,9 +44,9 @@ int venta_setCantidad(Venta* this,int cantidad);
 
 int venta_getCantidad(Venta* this,int* cantidad);
 
-int venta_setPrecio_unitario(Venta* this,int precio);
+int venta_setPrecio_unitario(Venta* this ,float precio);
 
-int venta_getPrecio_unitario(Venta* this,int* precio);
+int venta_getPrecio_unitario(Venta* this,float* precio);
 
 int venta_setTarjeta_credito(Venta* this,char* tarjeta);
 

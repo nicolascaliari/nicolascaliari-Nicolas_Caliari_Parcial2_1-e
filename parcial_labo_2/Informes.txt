@@ -1,5 +1,5 @@
 ******************INFORMES DE VENTA******************
--Cantidad de unidades vendidas totales: 1275
--Cantidad de ventas por un monto mayor a $10000: 36
--Cantidad de ventas por un monto mayor a $20000: 13
--Cantidad de unidades vendidas para la ram 3500: 52
+-Cantidad de unidades vendidas totales: 902
+-Cantidad de ventas por un monto mayor a $10000: 87
+-Cantidad de ventas por un monto mayor a $20000: 74
+-Cantidad de unidades vendidas para la ram 3500: 4

@@ -169,7 +169,7 @@ int ll_remove(LinkedList* this,int index)
 
         }else{
 
-            auxPrevNode = getNode(auxNode,index-1);
+            auxPrevNode = getNode(this,index-1);
             auxPrevNode->pNextNode = auxNode->pNextNode;
             this->size--;
 

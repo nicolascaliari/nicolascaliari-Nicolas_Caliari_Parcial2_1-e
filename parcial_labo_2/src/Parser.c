@@ -38,7 +38,6 @@ int parser_AutoFromText(FILE* pFile , LinkedList* pArrayListVenta)
 			pAutomovil = venta_newParametros(auxID, auxFecha_dia, auxFecha_mes, auxFecha_anio, auxModelo, auxCantidad, auxPrecio_unitario, auxTarjeta_credito);
 			if(pAutomovil != NULL)
 			{
-				printf("%s" , auxTarjeta_credito);
 				if(ll_add(pArrayListVenta,pAutomovil) == 0)
 				{
 					retorno = 0;
@@ -62,47 +61,51 @@ int parser_AutoFromText(FILE* pFile , LinkedList* pArrayListVenta)
  * \return int
  *
  */
-//int parser_AutoFromBinary(FILE* pFile, LinkedList* pArrayListJugador){
-//
-//    int retorno = 0;
-//    int axuId;
-//    char auxiliarFecha[30];
-//    char axuModelo[30];
-//    int cantidad;
-//    char auxPrecio[30];
-//    int tarjeta_credito;
-//    Auto* pAutomovil = NULL;
-//    int retornoVariable;
-//
-//    if(pFile != NULL && pArrayListJugador != NULL){
-//
-//
-//        do{
-//
-//        	pAutomovil = auto_new();
-//
-//            if(pAutomovil != NULL){
-//
-//                retornoVariable = fread(pAutomovil, sizeof(Auto), 1, pFile);
-//
-//                if(retornoVariable == 1){
-//
-//                    if(!(auto_getId(pAutomovil, &axuId)
-//                    && auto_getFecha_venta(pAutomovil, auxiliarFecha)
-//                    && auto_getModelo(pAutomovil, axuModelo)
-//                    && auto_getCantidad(pAutomovil, &cantidad)
-//                    && auto_getPrecio_unitario(pAutomovil, auxPrecio)
-//                    && auto_getTarjeta_credito(pAutomovil, &tarjeta_credito))){
-//
-//                        retorno = 0;
-//                        break;
-//
-//                    }
-//                    retorno = 1;
-//                }
-//            }
-//
-//        }while(!feof(pFile));
-//    }
-//    return retorno;
-//}
+int parser_AutoFromBinary(FILE* pFile, LinkedList* pArrayListJugador){
+
+    int retorno = 0;
+    int axuId;
+    int fecha_dia;
+	int fecha_mes;
+	int fecha_anio;
+    char axuModelo[30];
+    int cantidad;
+    float auxPrecio;
+    char tarjeta_credito[30];
+    Venta* pAutomovil = NULL;
+    int retornoVariable;
+
+    if(pFile != NULL && pArrayListJugador != NULL){
+
+
+        do{
+
+        	pAutomovil = venta_new();
+
+            if(pAutomovil != NULL){
+
+                retornoVariable = fread(pAutomovil, sizeof(Venta), 1, pFile);
+
+                if(retornoVariable == 1){
+
+                    if(!(venta_getId(pAutomovil, &axuId)
+                    && venta_getFecha_dia(pAutomovil, &fecha_dia)
+					&& venta_getFecha_mes(pAutomovil, &fecha_mes)
+					&& venta_getFecha_anio(pAutomovil, &fecha_anio)
+                    && venta_getModelo(pAutomovil, axuModelo)
+                    && venta_getCantidad(pAutomovil, &cantidad)
+                    && venta_getPrecio_unitario(pAutomovil, &auxPrecio)
+                    && venta_getTarjeta_credito(pAutomovil ,tarjeta_credito))){
+
+                        retorno = 0;
+                        break;
+
+                    }
+                    retorno = 1;
+                }
+            }
+
+        }while(!feof(pFile));
+    }
+    return retorno;
+}
