@@ -21,7 +21,6 @@ int main(void) {
 	setbuf(stdout,NULL);
     int option = 0;
     int bandera_cargar_datos = 0;
-    int contadorId = 94;
     LinkedList* listaVentas = ll_newLinkedList();
 
 
@@ -55,7 +54,7 @@ int main(void) {
             	}
                 break;
             case 2:
-            	controller_agregarJugador(listaVentas , &contadorId);
+            	controller_agregarJugador(listaVentas);
              	break;
             case 3:
             	controller_editarJugador(listaVentas);
@@ -73,7 +72,7 @@ int main(void) {
             	controller_saveAsText("Informes.txt" , listaVentas);
                 break;
             case 7:
-            	if(controller_guardarJugadoresModoTexto("MOCK_DATA.csv" , listaVentas) == 0)
+            	if(controller_guardarVentasModoTexto("MOCK_DATA.csv" , listaVentas) == 0)
             	{
             		printf("\nSe guardo bien el archivo en modo texto");
             	}else
@@ -81,6 +80,9 @@ int main(void) {
             		printf("\nNo se pudo guardar en modo texto");
             	}
                 break;
+            case  8:
+            	controller_guardarVentasModoBinario("MOCK_DATA", listaVentas);
+            	break;
             case 9:
                 break;
         }

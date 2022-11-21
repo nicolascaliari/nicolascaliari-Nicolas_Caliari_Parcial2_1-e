@@ -37,6 +37,7 @@ static Node* getNode(LinkedList* this, int nodeIndex)
         for(int i=0; i<nodeIndex; i++)
         {
             auxNode = auxNode->pNextNode;
+            printf("\n%d estoy en getnode", auxNode);
         }
     }
 
@@ -124,6 +125,7 @@ void* ll_get(LinkedList* this, int index)
        auxNode = getNode(this, index); //Validar.
 
        pRetorno = auxNode->pElement;
+       printf("\n%d estoy en llget", pRetorno);
 
     }
 
@@ -314,6 +316,8 @@ int ll_containsAll(LinkedList* this,LinkedList* this2)
     return retorno;
 }
 
+//Me genera una nueva lista
+
 LinkedList* ll_subList(LinkedList* this,int from,int to) {
     LinkedList* subList = NULL;
     void*auxPElement;
@@ -348,8 +352,50 @@ LinkedList* ll_clone(LinkedList* this) {
 
 
 
+int ll_sort(LinkedList* this, int (*pFunc)(void* ,void*), int order){
+    int returnAux =-1;
+    int estaOrdenado;
+    int len;
+    void* auxElement = NULL;
+    void* auxElementDos = NULL;
+    int retornoPFunc;
 
 
+
+    if(this != NULL && pFunc!= NULL && (order == 0 || order == 1) ){
+
+    	len = ll_len(this);
+
+
+    	do{
+    		estaOrdenado = 1;
+    		len--;
+    		for(int i=0; i<len; i++){
+
+    			auxElement = ll_get(this, i);
+    			auxElementDos = ll_get(this, i+1);
+    			retornoPFunc = pFunc(auxElement, auxElementDos);
+
+                     //2, 4, 6, 8
+                     //para arriba
+
+
+    			if( (retornoPFunc > 0 && order == 1)  || (retornoPFunc < 0 && order == 0)){
+    				ll_set(this, i, auxElementDos);
+    				ll_set(this, i+1, auxElement);
+    				estaOrdenado = 0;
+    			}
+
+    		}
+
+    	}while(estaOrdenado == 0);
+
+    	returnAux = 0;
+    }
+
+    return returnAux;
+
+}
 
 
 /*

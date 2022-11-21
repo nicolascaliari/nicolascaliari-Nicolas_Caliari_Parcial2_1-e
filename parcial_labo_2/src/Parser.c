@@ -109,3 +109,32 @@ int parser_AutoFromBinary(FILE* pFile, LinkedList* pArrayListJugador){
     }
     return retorno;
 }
+
+/** \brief Parsea los datos de los id desde el archivo ID.csv (modo texto).
+ *
+ * \param path char*
+ * \param auxiliarID char*
+ * \return int
+ *
+ */
+int parser_ID(FILE* pFile , char* auxiliarID)
+{
+	int retorno = -1;
+	int retornoVariable;
+
+		if(pFile != NULL && auxiliarID != NULL)
+		{
+
+			retornoVariable = fscanf(pFile,"%[^\n]\n", auxiliarID);
+			if(retornoVariable == 1)
+			{
+				printf("\nSe otorgo correctamente el ID");
+				retorno = 0;
+			}else
+			{
+				printf("\nError");
+				retorno = -1;
+			}
+		}
+	    return retorno;
+}

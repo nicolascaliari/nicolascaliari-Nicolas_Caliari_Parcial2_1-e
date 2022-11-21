@@ -30,6 +30,7 @@ Venta* venta_new();
 Venta* venta_newParametros(char* idStr,char* fechaStrDia,char* fechaStrMes, char* fechaStrAnio,char* modeloStr, char* cantidadStr, char* precioStr, char* tarjetaStr);
 void venta_delete(Venta* this);
 int imprimirAuto(LinkedList* pArrayListaJugadores , int indice);
+int idAutoincremental();
 
 
 int venta_setId(Venta* this,int id);

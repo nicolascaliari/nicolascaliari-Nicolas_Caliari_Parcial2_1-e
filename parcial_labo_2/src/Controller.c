@@ -117,7 +117,7 @@ int controller_listarJugadores(LinkedList* pArrayListVenta)
  * \return int
  *
  */
-int controller_agregarJugador(LinkedList* pArrayListVenta , int* contadorID)
+int controller_agregarJugador(LinkedList* pArrayListVenta)
 {
 	int retorno = -1;
 	int id;
@@ -141,10 +141,7 @@ int controller_agregarJugador(LinkedList* pArrayListVenta , int* contadorID)
 		 && utn_getDNI("\nIngrese su tarjeta de credito", "\nError", 16, 17, 2, tarjeta_credito) == 0)
 		{
 
-		printf("%s", tarjeta_credito);
-			(*contadorID)++;
-			id = *contadorID;
-
+		id =idAutoincremental();
 			pJugador = venta_new();
 
 			if(pJugador != NULL)
@@ -411,7 +408,7 @@ int controller_removerVenta(LinkedList* pArrayListVenta)
  * \return int
  *
  */
-int controller_guardarJugadoresModoTexto(char* path , LinkedList* pArrayListJugador)
+int controller_guardarVentasModoTexto(char* path , LinkedList* pArrayListJugador)
 {
 	int retorno = -1;
 	int limite;
@@ -460,4 +457,84 @@ int controller_guardarJugadoresModoTexto(char* path , LinkedList* pArrayListJuga
 			fclose(pArchivo);
 		}
     return retorno;
+}
+
+
+/** \brief Guarda los datos de los jugadores en el archivo binario.
+ *
+ * \param path char*
+ * \param pArrayListJugador LinkedList*
+ * \return int
+ *
+ */
+int controller_guardarVentasModoBinario(char* path , LinkedList* pArrayListVenta)
+{
+	int retorno = -1;
+	int limite = ll_len(pArrayListVenta);
+	Venta* auxiliarVenta = NULL;
+	FILE* pArchivo;
+	int retornoWrite;
+	int i;
+
+		if(path != NULL && pArrayListVenta !=NULL)
+		{
+			pArchivo = fopen(path, "wb");
+
+			if(pArchivo != NULL)
+			{
+				for(i = 0 ; i < limite; i++)
+				{
+					auxiliarVenta = (Venta*)ll_get(pArrayListVenta, i);
+
+				if(auxiliarVenta != NULL)
+				{
+					retornoWrite = fwrite(auxiliarVenta, sizeof(Venta), 1, pArchivo);
+
+					if(retornoWrite == 1)
+					{
+						retorno = 0;
+					}else
+					{
+						break;
+					}
+				}
+			}
+				fclose(pArchivo);
+		}
+
+	}
+
+    return retorno;
+}
+
+
+/**
+ * \brief carga los datos del ultimo id generado en el archivo ID.csv (modo texto).
+ * \param char* path
+ * \param char* auxiliarID
+ * \return 0 bien, -1 ERROR.
+**/
+int controllerCargarId(char* path, char* auxiliarID)
+{
+	int retorno = -1;
+	FILE* pArchivo = NULL;
+
+		if(path != NULL && auxiliarID != NULL)
+		{
+			pArchivo = fopen(path,"r");
+
+			if(pArchivo != NULL)
+			{
+				if(parser_ID(pArchivo, auxiliarID )== 0)
+				{
+					printf("\nEl archivo se leyo correctamente");
+					retorno = 0;
+				}else
+				{
+					printf("\nEl archivo se leyo mal");
+				}
+
+			}
+		}
+	return retorno;
 }

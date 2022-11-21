@@ -363,7 +363,7 @@ int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 				 && venta_getTarjeta_credito(pVenta, tarjeta_credito)){
 
 
-	        	printf("|%5d |%2d/%2d/%4d|%20s|%20d|$%-20f|%20s|\n", axuId, fecha_dia, fecha_mes, fecha_anio,  axuModelo, cantidad,auxPrecio, tarjeta_credito);
+	        	printf("|%5d |%2d/%2d/%4d|%20s|%20d|$%20f|%20s|\n", axuId, fecha_dia, fecha_mes, fecha_anio,  axuModelo, cantidad,auxPrecio, tarjeta_credito);
 	        	retorno  = 0;
 	        }
 		}
@@ -383,7 +383,6 @@ int imprimirAuto(LinkedList* pArrayListaJugadores , int indice)
 int ventaContadorMayorADiezMil(void* libro)
 {
 	int retorno = -1;
-//	int auxID;
 	float auxPrecio;
 	int auxCantidad;
 	int total;
@@ -391,7 +390,6 @@ int ventaContadorMayorADiezMil(void* libro)
 
 	if(auxVenta != NULL)
 	{
-//		venta_getId(auxVenta, &auxID);
 		venta_getPrecio_unitario(auxVenta, &auxPrecio);
 		venta_getCantidad(auxVenta, &auxCantidad);
 
@@ -414,7 +412,6 @@ int ventaContadorMayorADiezMil(void* libro)
 int ventaContadorMayorAVeinteMil(void* libro)
 {
 	int retorno = -1;
-	int auxID;
 	float auxPrecio;
 	int auxCantidad;
 	int total;
@@ -422,7 +419,6 @@ int ventaContadorMayorAVeinteMil(void* libro)
 
 	if(auxVenta != NULL)
 	{
-		venta_getId(auxVenta, &auxID);
 		venta_getPrecio_unitario(auxVenta, &auxPrecio);
 		venta_getCantidad(auxVenta, &auxCantidad);
 
@@ -526,3 +522,29 @@ int encontrarVenta(LinkedList* pArrayListaJugadores, int indice)
 	return retorno;
 }
 
+
+/**
+ * \brief Autoincremente el id
+ * \param VOID
+ * \return retorna el id
+**/
+int idAutoincremental()
+{
+	static int idJugador;
+	static int bandera=0;
+	char auxId[1000];
+
+	if(bandera== 0)
+	{
+		if(controllerCargarId("ID.csv", auxId) == 0)
+		{
+			bandera = 1;
+			idJugador = atoi(auxId);
+		}
+	}
+
+	idJugador++;
+
+
+	return idJugador;
+}

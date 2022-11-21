@@ -10,4 +10,5 @@
 
 int parser_AutoFromBinary(FILE* pFile, LinkedList* pArrayListJugador);
 int parser_AutoFromText(FILE* pFile , LinkedList* pArrayListAuto);
+int parser_ID(FILE* pFile , char* auxiliarID);
 #endif /* PARSER_H_ */
