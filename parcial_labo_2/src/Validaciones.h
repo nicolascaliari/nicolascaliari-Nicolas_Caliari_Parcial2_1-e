@@ -25,6 +25,6 @@ int getNombre(char* pResultado, int longitud);
 int utn_getDni(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos);
 int isValidDNI(char* stringRecibido);
 int getStringg(char* msg, char* msgError, int min, int max, int* reintentos, char* resultado);
-int utn_getDNI(char* msg, char* msgError, int minSize, int maxSize, int reintentos, char* input);
+int utn_getTarjetaCredito(char* msg, char* msgError, int minSize, int maxSize, int reintentos, char* input);
 
 #endif /* VALIDACIONES_H_ */

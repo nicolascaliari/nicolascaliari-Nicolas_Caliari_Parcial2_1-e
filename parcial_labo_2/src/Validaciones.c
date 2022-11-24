@@ -274,7 +274,7 @@ int getStringg(char* msg, char* msgError, int min, int max, int* reintentos, cha
     return retorno;
 }
 
-int utn_getDNI(char* msg, char* msgError, int minSize, int maxSize, int reintentos, char* input)
+int utn_getTarjetaCredito(char* msg, char* msgError, int minSize, int maxSize, int reintentos, char* input)
 {
 //    maxSize=11; //con puntos
 //    minSize=8;  // sin puntos

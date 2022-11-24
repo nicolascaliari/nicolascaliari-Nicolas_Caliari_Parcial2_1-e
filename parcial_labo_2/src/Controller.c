@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "Autos.h"
 #include "LinkedList.h"
 #include "Parser.h"
 #include "Validaciones.h"
 #include "Controller.h"
+#include "Ventas.h"
 
-/** \brief Carga los datos de los jugadores desde el archivo jugadores.csv (modo texto).
+/** \brief Carga los datos de las ventas desde el archivo MOCK_DATA.csv (modo texto).
  *
  * \param path char*
- * \param pArrayListJugador LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  *
  */
@@ -38,49 +38,16 @@ int controller_cargarJugadoresDesdeTexto(char* path , LinkedList* pArrayListVent
     return retorno;
 }
 
-/** \brief Carga los datos de los jugadores desde el archivo generado en modo binario.
+
+
+/** \brief Listar ventas
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
- */
-int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJugador)
-{
-	int retorno = -1;
-	FILE* pArchivo;
-
-	if(path != NULL && pArrayListJugador != NULL)
-	{
-		pArchivo = fopen(path, "rb");
-		if(pArchivo != NULL)
-		{
-			if(parser_AutoFromBinary(pArchivo, pArrayListJugador))
-			{
-				printf("\nEl archivo binario se leyo corrrectamente\n");
-				retorno = 0;
-			}else
-			{
-				printf("\nError al leer al archivo binario");
-			}
-		}
-		fclose(pArchivo);
-	}
-    return retorno;
-}
-
-
-
-
-/** \brief Listar jugadores
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  *
  */
 
-int controller_listarJugadores(LinkedList* pArrayListVenta)
+int controller_listarVentas(LinkedList* pArrayListVenta)
 {
 	int retorno = -1;
 	Venta* pJugador = NULL;
@@ -89,13 +56,15 @@ int controller_listarJugadores(LinkedList* pArrayListVenta)
     	{
     		printf("|%5s|%10s|%20s|%20s|%20s|%20s|\n", "ID", "Fecha_venta", "Modelo",
     															"Cantidad", "Precio_Unitario", "Tarjeta de credito");
+
+    		 ll_sort(pArrayListVenta , ordenarID, 1);
     		for(int i = 0; i < ll_len(pArrayListVenta); i++)
     		{
     			pJugador = (Venta*)ll_get(pArrayListVenta, i);
 
     			if(pJugador != NULL)
     			{
-    				if(imprimirAuto(pArrayListVenta,i) == 0)
+    				if(imprimirVenta(pArrayListVenta,i) == 0)
     				{
     					retorno = 0;
     				}
@@ -110,10 +79,10 @@ int controller_listarJugadores(LinkedList* pArrayListVenta)
 }
 
 
-/** \brief Alta de jugadores
+
+/** \brief Alta de venta
  *
- * \param path char*
- * \param pArrayListJugador LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  *
  */
@@ -124,7 +93,7 @@ int controller_agregarJugador(LinkedList* pArrayListVenta)
 	int fecha_dia;
 	int fecha_mes;
 	int fecha_anio;
-    char axuModelo[30];
+    char axuModelo[200];
     int cantidad;
     float auxPrecio;
     char tarjeta_credito[30];
@@ -132,13 +101,13 @@ int controller_agregarJugador(LinkedList* pArrayListVenta)
 
 	if(pArrayListVenta != NULL && ll_len(pArrayListVenta) >= 0)
 	{
-		if(utn_getNumero(&fecha_dia, "\nIngrese el dia", "\nError",1, 30, 2) == 0
-		 && utn_getNumero(&fecha_mes, "\nIngrese el mes", "\nError",1, 12, 2) == 0
-		 && utn_getNumero(&fecha_anio, "\nIngrese el anio", "\nError",1000, 2023, 2) == 0
-		 && utn_getNombre(axuModelo, 30, "\nIngrese modelo del auto", "\nError", 2) == 0
-		 && utn_getNumero(&cantidad, "\nIngrese la cantidad", "\nError",1, 30, 2) == 0
-		 && utn_getNumeroFlotante(&auxPrecio, "\nIngrese el precio", "\nError", 1, 800000, 2) == 0
-		 && utn_getDNI("\nIngrese su tarjeta de credito", "\nError", 16, 17, 2, tarjeta_credito) == 0)
+		if(utn_getNumero(&fecha_dia, "\nIngrese el dia del 1 al 30", "\nError",1, 30, 2) == 0
+		 && utn_getNumero(&fecha_mes, "\nIngrese el mes del 1 al 12", "\nError",1, 12, 2) == 0
+		 && utn_getNumero(&fecha_anio, "\nIngrese el anio del 2000 al 2023", "\nError",1000, 2023, 2) == 0
+		 && elegirModeloDeAuto(axuModelo) == 0
+		 && utn_getNumero(&cantidad, "\nIngrese la cantidad del 1 al 30", "\nError",1, 30, 2) == 0
+		 && utn_getNumeroFlotante(&auxPrecio, "\nIngrese el precio del 2000 al 40000", "\nError", 1, 800000, 2) == 0
+		 && utn_getTarjetaCredito("\nIngrese 16 numeros de su tarjeta de credito", "\nError", 16, 17, 2, tarjeta_credito) == 0)
 		{
 
 		id =idAutoincremental();
@@ -158,7 +127,7 @@ int controller_agregarJugador(LinkedList* pArrayListVenta)
 					if(ll_add(pArrayListVenta, pJugador) == 0)
 					{
 						retorno = 0;
-						printf("\nJugador cargado correctamente");
+						printf("\nVenta cargado correctamente");
 					}
 				}else
 				{
@@ -167,106 +136,20 @@ int controller_agregarJugador(LinkedList* pArrayListVenta)
 			}
 		}else
 		{
-			printf("\nNo es posible cargar los empleados");
+			printf("\nNo es posible cargar la venta");
 		}
 	}
     return retorno;
 }
 
 
-
-
-
-/** \brief Guarda los datos de los libros en el archivo data.csv (modo texto).
- *
- * \param path char*
- * \param pArrayListLibro LinkedList*
- * \return int
- *
- */
-int controller_saveAsText(char* path, LinkedList* pArrayListVenta)
-{
-    FILE* f;
-    int retorno = -1;
-    int len;
-    int cantidad;
-    int cantidad2;
-    int cantidadUnidadesVendidas;
-    int cantidadVentaPorModelo;
-
-    f = fopen(path, "w");
-    if(f != NULL && ll_len(pArrayListVenta) > 0)
-    {
-        len = ll_len(pArrayListVenta);
-        fprintf(f, "******************");
-        fprintf(f, "INFORMES DE VENTA");
-        fprintf(f, "******************");
-
-        controller_contarPorPrecio(pArrayListVenta ,  &cantidad , &cantidad2, &cantidadUnidadesVendidas, &cantidadVentaPorModelo);
-
-        fprintf(f, "\n-Cantidad de unidades vendidas totales: %d",cantidadUnidadesVendidas);
-        fprintf(f, "\n-Cantidad de ventas por un monto mayor a $10000: %d",cantidad);
-        fprintf(f, "\n-Cantidad de ventas por un monto mayor a $20000: %d",cantidad2);
-        fprintf(f, "\n-Cantidad de unidades vendidas para la ram 3500: %d",cantidadVentaPorModelo);
-
-        printf("\n--Archivo guardado--\n");
-        retorno = 0;
-    }
-    else
-    {
-        printf("\n--No se pudo guardar el archivo--\n");
-    }
-    fclose(f);
-    return retorno;
-}
-
-
-
-
-int controller_contarPorPrecio(LinkedList* pArrayListVenta, int* cantidad, int* cantidad2, int* cantidadVendidos, int* cantidadModelo)
-{
-	int cantidadTotal1 = 0;
-	int cantidadTotal2 = 0;
-	int cantidadUnidadesVendidas = 0;
-	int cantidadModelos = 0;
-	int retorno = -1;
-	int len;
-	len = ll_len(pArrayListVenta);
-
-	if(pArrayListVenta != NULL && len > 0)
-	{
-		cantidadTotal1 = ll_count(pArrayListVenta, ventaContadorMayorADiezMil);
-		cantidadTotal2 = ll_count(pArrayListVenta, ventaContadorMayorAVeinteMil);
-		cantidadUnidadesVendidas = ll_count(pArrayListVenta, ventaAcumuladorUnidadesVendidas);
-		cantidadModelos = ll_count(pArrayListVenta, ventaAcumuladorVentasDeModelo);
-		if(cantidadTotal1 > 0){
-			*cantidad = cantidadTotal1;
-		}
-
-		if(cantidadTotal2 > 0)
-		{
-			*cantidad2 = cantidadTotal2;
-		}
-
-		if(cantidadUnidadesVendidas > 0)
-		{
-			*cantidadVendidos = cantidadUnidadesVendidas;
-		}
-
-		if(cantidadModelos > 0)
-		{
-			*cantidadModelo = cantidadModelos;
-		}
-	}
-	return retorno;
-}
 
 
 //
-///** \brief Modificar datos del jugador
+///** \brief Modificar datos de la venta
 // *
 // * \param path char*
-// * \param pArrayListJugador LinkedList*
+// * \param pArrayListVenta LinkedList*
 // * \return int
 // *
 // */
@@ -287,7 +170,7 @@ int controller_editarJugador(LinkedList* pArrayListVenta)
 	if(pArrayListVenta != NULL && ll_len(pArrayListVenta) != 0)
 	{
 
-		if(controller_listarJugadores(pArrayListVenta) == 0)
+		if(controller_listarVentas(pArrayListVenta) == 0)
 		{
 
 			if(utn_getNumero(&opcion, "\nIngrese el ID que desea modificas", "\nError al ingresar ID a modificar", 1, 10000, 2) == 0)
@@ -357,10 +240,14 @@ int controller_editarJugador(LinkedList* pArrayListVenta)
 }
 
 
-///** \brief Baja del jugador
+
+
+
+
+///** \brief Baja de venta
 // *
 // * \param path char*
-// * \param pArrayListJugador LinkedList*
+// * \param pArrayListVenta LinkedList*
 // * \return int
 // *
 // */
@@ -374,23 +261,28 @@ int controller_removerVenta(LinkedList* pArrayListVenta)
 		if(pArrayListVenta != NULL && ll_len(pArrayListVenta) >= 0)
 		{
 
-			if(controller_listarJugadores(pArrayListVenta) == 0)
+			if(controller_listarVentas(pArrayListVenta) == 0)
 			{
 
-				utn_getNumero(&idBuscado, "\nIngrese el ID que desea eliminar", "\nError al eliminar el id", 1, 10000, 2);
-
-				indice = encontrarVenta(pArrayListVenta, idBuscado);
-
-				if(indice != -1)
+				if(utn_getNumero(&idBuscado, "\nIngrese el ID que desea eliminar", "\nError al eliminar el id", 1, 10000, 2) == 0)
 				{
-					pVenta = (Venta*)ll_get(pArrayListVenta, indice);
-					ll_remove(pArrayListVenta, indice);
-					venta_delete(pVenta);
-					printf("\nEmpleado eliminado correctamente\n");
-					retorno = 0;
-				}else
-				{
-					printf("\nUsted no dio a nadie de baja");
+
+					indice = encontrarVenta(pArrayListVenta, idBuscado);
+
+						if(indice != -1)
+						{
+							pVenta = (Venta*)ll_get(pArrayListVenta, indice);
+							if(pVenta != NULL)
+							{
+								ll_remove(pArrayListVenta, indice);
+								venta_delete(pVenta);
+								printf("\nEmpleado eliminado correctamente\n");
+								retorno = 0;
+							}
+						}else
+						{
+							printf("\nUsted no dio a nadie de baja");
+						}
 				}
 			}
 
@@ -401,14 +293,106 @@ int controller_removerVenta(LinkedList* pArrayListVenta)
 
 
 
-/** \brief Guarda los datos de los jugadores en el archivo jugadores.csv (modo texto).
+
+/** \brief Guarda los datos de las ventas en el archivo data.csv (modo texto).
  *
  * \param path char*
- * \param pArrayListSeleccion LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  *
  */
-int controller_guardarVentasModoTexto(char* path , LinkedList* pArrayListJugador)
+int controller_GuardarComoTexto(char* path, LinkedList* pArrayListVenta)
+{
+    FILE* f;
+    int retorno = -1;
+    int cantidadDiezMil;
+    int cantidadVeinteMil;
+    int cantidadUnidadesVendidas;
+    int cantidadVentaPorModelo;
+
+    f = fopen(path, "w");
+    if(f != NULL && ll_len(pArrayListVenta) > 0)
+    {
+        fprintf(f, "******************");
+        fprintf(f, "INFORMES DE VENTA");
+        fprintf(f, "******************");
+
+       if( controller_contarPorPrecio(pArrayListVenta ,  &cantidadDiezMil , &cantidadVeinteMil, &cantidadUnidadesVendidas, &cantidadVentaPorModelo) == 0)
+       {
+           fprintf(f, "\n-Cantidad de unidades vendidas totales: %d",cantidadUnidadesVendidas);
+           fprintf(f, "\n-Cantidad de ventas por un monto mayor a $10000: %d",cantidadDiezMil);
+           fprintf(f, "\n-Cantidad de ventas por un monto mayor a $20000: %d",cantidadVeinteMil);
+           fprintf(f, "\n-Cantidad de unidades vendidas para la ram 3500: %d",cantidadVentaPorModelo);
+
+           printf("\n--Archivo guardado--\n");
+           retorno = 0;
+       }
+       else
+       {
+    	   printf("\nAlgo salio mal");
+       }
+    }
+    else
+    {
+        printf("\n--No se pudo guardar el archivo--\n");
+    }
+    fclose(f);
+    return retorno;
+}
+
+
+
+
+int controller_contarPorPrecio(LinkedList* pArrayListVenta, int* cantidadDiez, int* cantidadVeinte, int* cantidadVendidos, int* cantidadModelo)
+{
+	int cantidadDiezMil = 0;
+	int cantidadVeinteMil = 0;
+	int cantidadUnidadesVendidas = 0;
+	int cantidaVendidasUndModelo = 0;
+	int retorno = -1;
+	int len;
+	len = ll_len(pArrayListVenta);
+
+	if(pArrayListVenta != NULL && len > 0)
+	{
+		cantidadDiezMil = ll_count(pArrayListVenta, ventaContadorMayorADiezMil);
+
+		cantidadVeinteMil = ll_count(pArrayListVenta, ventaContadorMayorAVeinteMil);
+
+		cantidadUnidadesVendidas = ll_count(pArrayListVenta, ventaAcumuladorUnidadesVendidas);
+
+		cantidaVendidasUndModelo = ll_count(pArrayListVenta, ventaAcumuladorVentasDeModelo);
+
+		if(cantidadDiezMil < 0 && cantidadVeinteMil < 0 && cantidadUnidadesVendidas < 0 && cantidaVendidasUndModelo < 0)
+		{
+			printf("\nAlgo salio mal");
+		}else
+		{
+			*cantidadDiez = cantidadDiezMil;
+			*cantidadVeinte = cantidadVeinteMil;
+			*cantidadVendidos = cantidadUnidadesVendidas;
+			*cantidadModelo = cantidaVendidasUndModelo;
+			retorno = 0;
+		}
+
+	}
+	return retorno;
+}
+
+
+
+
+
+
+
+/** \brief Guarda los datos de las ventas en el archivo MOCK_DATA.csv (modo texto).
+ *
+ * \param path char*
+ * \param pArrayListVenta LinkedList*
+ * \return int
+ *
+ */
+int controller_guardarVentasModoTexto(char* path , LinkedList* pArrayListVenta)
 {
 	int retorno = -1;
 	int limite;
@@ -424,46 +408,50 @@ int controller_guardarVentasModoTexto(char* path , LinkedList* pArrayListJugador
     char tarjeta_credito[30];
 	int i;
 
-		if(path != NULL && pArrayListJugador !=NULL)
+		if(path != NULL && pArrayListVenta !=NULL)
 		{
 			pArchivo = fopen(path, "w");
 
 			if(pArchivo != NULL)
 			{
-				limite = ll_len(pArrayListJugador);
+				limite = ll_len(pArrayListVenta);
 				fprintf(pArchivo, "id,fecha_venta,modelo,cantidad,precio_unitario,tarjeta_de_credito\n");
 				for(i=0 ; i < limite; i++)
 				{
-					auxiliarJugador = ll_get(pArrayListJugador, i);
+					auxiliarJugador = ll_get(pArrayListVenta, i);
 
-					if(venta_getId(auxiliarJugador, &axuId) == 1
-						&& venta_getFecha_dia(auxiliarJugador, &fecha_dia) == 1
-						&& venta_getFecha_mes(auxiliarJugador, &fecha_mes) == 1
-						&& venta_getFecha_anio(auxiliarJugador, &fecha_anio) == 1
-						&& venta_getCantidad(auxiliarJugador, &cantidad)== 1
-						&& venta_getModelo(auxiliarJugador, axuModelo) == 1
-						&& venta_getPrecio_unitario(auxiliarJugador, &auxPrecio)==1
-						&& venta_getTarjeta_credito(auxiliarJugador, tarjeta_credito) == 1)
+					if(auxiliarJugador != NULL)
 					{
+						if(venta_getId(auxiliarJugador, &axuId) == 1
+								&& venta_getFecha_dia(auxiliarJugador, &fecha_dia) == 1
+								&& venta_getFecha_mes(auxiliarJugador, &fecha_mes) == 1
+								&& venta_getFecha_anio(auxiliarJugador, &fecha_anio) == 1
+								&& venta_getCantidad(auxiliarJugador, &cantidad)== 1
+								&& venta_getModelo(auxiliarJugador, axuModelo) == 1
+								&& venta_getPrecio_unitario(auxiliarJugador, &auxPrecio)==1
+								&& venta_getTarjeta_credito(auxiliarJugador, tarjeta_credito) == 1)
+						{
 						fprintf(pArchivo, "%d, %d/%d/%d , %s, %d , %f , %s\n", axuId, fecha_dia, fecha_mes, fecha_anio, axuModelo, cantidad,auxPrecio ,tarjeta_credito );
 						retorno = 0;
-					}
+						}
 
+
+					}else
+					{
+						printf("Algo salio mal");
+					}
 				}
-			}else
-			{
-				printf("Algo salio mal");
+				fclose(pArchivo);
 			}
-			fclose(pArchivo);
 		}
     return retorno;
 }
 
 
-/** \brief Guarda los datos de los jugadores en el archivo binario.
+/** \brief Guarda los datos de las ventas en el archivo binario.
  *
  * \param path char*
- * \param pArrayListJugador LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  *
  */
@@ -538,3 +526,4 @@ int controllerCargarId(char* path, char* auxiliarID)
 		}
 	return retorno;
 }
+

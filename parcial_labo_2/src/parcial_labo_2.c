@@ -11,16 +11,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "LinkedList.h"
-#include "Autos.h"
 #include "Validaciones.h"
 #include "Controller.h"
+#include "Ventas.h"
 
 
 
 int main(void) {
 	setbuf(stdout,NULL);
     int option = 0;
-    int bandera_cargar_datos = 0;
     LinkedList* listaVentas = ll_newLinkedList();
 
 
@@ -42,46 +41,110 @@ int main(void) {
         switch(option)
         {
             case 1:
-            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaVentas)== 0
-            		&& controller_cargarJugadoresDesdeBinario("MOCK_DATA.csv" , listaVentas) == 0)
+            	if(controller_cargarJugadoresDesdeTexto("MOCK_DATA.csv",listaVentas)== 0)
 
             	{
             		printf("\nLos archivos  se leyeron correctamente");
-            		bandera_cargar_datos = 1;
             	}else
             	{
             		printf("\nLos archivos no se leyeron correctamente");
             	}
                 break;
             case 2:
-            	controller_agregarJugador(listaVentas);
-             	break;
-            case 3:
-            	controller_editarJugador(listaVentas);
-                break;
-            case 4:
-            	controller_removerVenta(listaVentas);
-                break;
-            case 5:
-                	if(controller_listarJugadores(listaVentas)== 0)
-                	{
-                		printf("Todo ok");
-                	}
-                break;
-            case 6:
-            	controller_saveAsText("Informes.txt" , listaVentas);
-                break;
-            case 7:
-            	if(controller_guardarVentasModoTexto("MOCK_DATA.csv" , listaVentas) == 0)
+            	if(controller_agregarJugador(listaVentas) == 0)
             	{
-            		printf("\nSe guardo bien el archivo en modo texto");
+            		printf("\nTodo salio bien al agregar un jugador");
             	}else
             	{
-            		printf("\nNo se pudo guardar en modo texto");
+            		printf("\nAlgo salio mal");
+            	}
+             	break;
+            case 3:
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                	if(controller_editarJugador(listaVentas) == 0)
+                	{
+                		printf("\nTodo salio bien");
+                	}else
+                	{
+                		printf("\nAlgo salio mal");
+                	}
+            	}else
+            	{
+            		printf("\nDebes cargar alguna venta primero");
+            	}
+                break;
+            case 4:
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                	if(controller_removerVenta(listaVentas) == 0)
+                	{
+                		printf("\nTodo salio bien");
+                	}else
+                	{
+                		printf("\nAlgo salio mal");
+                	}
+            	}else
+            	{
+            		printf("\nDebes cargar alguna venta primero");
+            	}
+                break;
+            case 5:
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                    if(controller_listarVentas(listaVentas)== 0)
+                    {
+                    	printf("Todo ok");
+                    }
+            	}else
+            	{
+               		printf("\nDebes cargar alguna venta primero");
+            	}
+                break;
+            case 6:
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                	if(controller_GuardarComoTexto("Informes.txt" , listaVentas) == 0)
+                	{
+                		printf("\nTodo salio bien");
+                	}else
+                	{
+                		printf("\nAlgo salio mal");
+                	}
+            	}else
+            	{
+               		printf("\nDebes cargar alguna venta primero");
+            	}
+                break;
+            case 7:
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                	if(controller_guardarVentasModoTexto("MOCK_DATA.csv" , listaVentas) == 0)
+                	{
+                		printf("\nSe guardo bien el archivo en modo texto");
+                	}else
+                	{
+                		printf("\nNo se pudo guardar en modo texto");
+                	}
+            	}else
+            	{
+               		printf("\nDebes cargar alguna venta primero");
             	}
                 break;
             case  8:
-            	controller_guardarVentasModoBinario("MOCK_DATA", listaVentas);
+            	if(ll_isEmpty(listaVentas) == 0)
+            	{
+                	if(controller_guardarVentasModoBinario("MOCK_DATA.bin", listaVentas) == 0)
+                	{
+                		printf("\nTodo salio bien");
+                	}else
+                	{
+                		printf("\nAlgo salio mal");
+                	}
+            	}else
+            	{
+               		printf("\nDebes cargar alguna venta primero");
+            	}
             	break;
             case 9:
                 break;

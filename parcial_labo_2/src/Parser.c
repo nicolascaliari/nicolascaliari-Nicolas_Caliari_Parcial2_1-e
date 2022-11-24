@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Controller.h"
-#include "Autos.h"
+#include "Ventas.h"
 
-/** \brief Parsea los datos de los jugadores desde el archivo jugadores.csv (modo texto).
+/** \brief Parsea los datos de los ventas desde el archivo MOCK_DATA.csv (modo texto).
  *
  * \param path char*
- * \param pArrayListJugador LinkedList*
+ * \param pArrayListVenta LinkedList*
  * \return int
  */
 int parser_AutoFromText(FILE* pFile , LinkedList* pArrayListVenta)
@@ -51,62 +51,6 @@ int parser_AutoFromText(FILE* pFile , LinkedList* pArrayListVenta)
 
 		}while(!feof(pFile));
 	}
-    return retorno;
-}
-
-/** \brief Parsea los datos de los jugadores desde el archivo binario.
- *
- * \param path char*
- * \param pArrayListJugador LinkedList*
- * \return int
- *
- */
-int parser_AutoFromBinary(FILE* pFile, LinkedList* pArrayListJugador){
-
-    int retorno = 0;
-    int axuId;
-    int fecha_dia;
-	int fecha_mes;
-	int fecha_anio;
-    char axuModelo[30];
-    int cantidad;
-    float auxPrecio;
-    char tarjeta_credito[30];
-    Venta* pAutomovil = NULL;
-    int retornoVariable;
-
-    if(pFile != NULL && pArrayListJugador != NULL){
-
-
-        do{
-
-        	pAutomovil = venta_new();
-
-            if(pAutomovil != NULL){
-
-                retornoVariable = fread(pAutomovil, sizeof(Venta), 1, pFile);
-
-                if(retornoVariable == 1){
-
-                    if(!(venta_getId(pAutomovil, &axuId)
-                    && venta_getFecha_dia(pAutomovil, &fecha_dia)
-					&& venta_getFecha_mes(pAutomovil, &fecha_mes)
-					&& venta_getFecha_anio(pAutomovil, &fecha_anio)
-                    && venta_getModelo(pAutomovil, axuModelo)
-                    && venta_getCantidad(pAutomovil, &cantidad)
-                    && venta_getPrecio_unitario(pAutomovil, &auxPrecio)
-                    && venta_getTarjeta_credito(pAutomovil ,tarjeta_credito))){
-
-                        retorno = 0;
-                        break;
-
-                    }
-                    retorno = 1;
-                }
-            }
-
-        }while(!feof(pFile));
-    }
     return retorno;
 }
 

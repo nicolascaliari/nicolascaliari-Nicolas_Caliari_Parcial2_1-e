@@ -5,8 +5,8 @@
  *      Author: nicolas
  */
 
-#ifndef AUTOS_H_
-#define AUTOS_H_
+#ifndef VENTAS_H_
+#define VENTAS_H_
 
 typedef struct
 {
@@ -29,8 +29,10 @@ typedef struct
 Venta* venta_new();
 Venta* venta_newParametros(char* idStr,char* fechaStrDia,char* fechaStrMes, char* fechaStrAnio,char* modeloStr, char* cantidadStr, char* precioStr, char* tarjetaStr);
 void venta_delete(Venta* this);
-int imprimirAuto(LinkedList* pArrayListaJugadores , int indice);
+int imprimirVenta(LinkedList* pArrayListaJugadores , int indice);
 int idAutoincremental();
+int ordenarID(void* elementoA, void* elementoB);
+int elegirModeloDeAuto(char ModeloElegido[]);
 
 
 int venta_setId(Venta* this,int id);
@@ -74,4 +76,4 @@ int ventaAcumuladorVentasDeModelo(void* libro);
 
 int encontrarVenta(LinkedList* pArrayListaJugadores, int indice);
 
-#endif /* AUTOS_H_ */
+#endif /* VENTAS_H_ */
