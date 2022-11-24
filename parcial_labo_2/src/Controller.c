@@ -200,31 +200,39 @@ int controller_editarJugador(LinkedList* pArrayListVenta)
 								&& 	utn_getNumero(&fechaMes,"\nIngrese el mes a modificar", "\nError", 1, 12, 2) == 0
 								&& utn_getNumero(&fechaAnio,"\nIngrese el dia a modificar", "\nError", 1000, 2023, 2) == 0)
 								{
-									venta_setFecha_dia(pVenta, fechaDia);
-									venta_setFecha_mes(pVenta, fechaMes);
-									venta_setFecha_anio(pVenta, fechaAnio);
-									retorno = 0;
+									if(venta_setFecha_dia(pVenta, fechaDia) == 1 &&
+									venta_setFecha_mes(pVenta, fechaMes) == 1 &&
+									venta_setFecha_anio(pVenta, fechaAnio) == 1)
+									{
+										retorno = 0;
+									}
 								}
 								break;
 							case 2:
 								if(utn_getNombre(auxiliarModelo, 30, "\nIngrese el nuevo nombre", "\nError", 2) == 0)
 								{
-									venta_setModelo(pVenta, auxiliarModelo);
-									retorno = 0;
+									if(venta_setModelo(pVenta, auxiliarModelo) == 1)
+									{
+										retorno = 0;
+									}
 								}
 								break;
 							case 3:
 								if(utn_getNumero(&auxiliarCantidad, "\nIngrese la nueva cantidad", "\nError al ingresar nueva cantidad", 1, 50, 2) == 0)
 								{
-									venta_setCantidad(pVenta, auxiliarCantidad);
-									retorno = 0;
+									if(venta_setCantidad(pVenta, auxiliarCantidad) == 1)
+									{
+										retorno = 0;
+									}
 								}
 								break;
 							case 4:
 								if(utn_getNumeroFlotante(&auxPrecio, "\nIngrese el nuevo precio", "\nError", 1, 30000, 2) == 0)
 								{
-									venta_setPrecio_unitario(pVenta, auxPrecio);
-									retorno = 0;
+									if(venta_setPrecio_unitario(pVenta, auxPrecio) == 1)
+									{
+										retorno = 0;
+									}
 								}
 								break;
 
