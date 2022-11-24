@@ -61,15 +61,11 @@ static Node* getNode(LinkedList *this, int nodeIndex)
 			{
 				for (int i = 0; i < nodeIndex; i++)
 				{
-
 					auxNode = auxNode->pNextNode;
 				}
 			}
-
 		}
-
 	}
-
 	return auxNode;
 }
 
@@ -548,7 +544,7 @@ int ll_sort(LinkedList *this, int (*pFunc)(void*, void*), int order)
 					ll_set(this, i + 1, auxElement);
 					estaOrdenado = 0;
 				}
-
+				// 6 2 4
 			}
 
 		} while (estaOrdenado == 0);

@@ -20,6 +20,7 @@
 int main(void) {
 	setbuf(stdout,NULL);
     int option = 0;
+    int confirmar;
     LinkedList* listaVentas = ll_newLinkedList();
 
 
@@ -36,8 +37,6 @@ int main(void) {
 									"\n8-Guarda archivo en binario"
     								"\n9-Salir", "Error ingrese las opciones que se muestran en el menu",1, 9, 2)==0)
     	{
-
-
         switch(option)
         {
             case 1:
@@ -147,6 +146,13 @@ int main(void) {
             	}
             	break;
             case 9:
+            	if(utn_getNumero(&confirmar, "\nIngrese 9 para salir o 1 para seguir", "\nError", 1, 9, 2) == 0)
+            	{
+            		ll_deleteLinkedList(listaVentas);
+            	}else
+            	{
+            		printf("\nAlgo salio mal");
+            	}
                 break;
         }
     }
